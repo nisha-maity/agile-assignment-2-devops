@@ -33,3 +33,18 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t devops-flask-app .
+
+      - name: Deploy using Docker Compose
+        run: |
+          docker compose up -d
+          docker compose ps
+
+      - name: Verify deployed application
+        run: |
+          sleep 5
+          curl --fail http://localhost:5000/health
+
+      - name: Stop Docker Compose
+        if: always()
+        run: |
+          docker compose down
